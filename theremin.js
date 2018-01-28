@@ -8,7 +8,7 @@ gainNode.connect(context.destination);
 var calculateFrequency = function (mouseXPosition) {
   var minFrequency = 20,
       maxFrequency = 2000;
-  return ((mouseXPosition / window.innerWidth) * maxFrequency) + minFrequency;
+  return 1 - ((mouseXPosition / window.innerWidth) * maxFrequency) + minFrequency;
   };
 
 var calculateGain = function (mouseYPosition) {
@@ -21,8 +21,8 @@ var calculateGain = function (mouseYPosition) {
 document.body.addEventListener('mousedown', function (e) {
   mousedown = true;
   oscillator = context.createOscillator();
-  oscillator.frequency.setTargetAtTime(calculateFrequency(e.clientX), context.currentTime, 0.01);
-  gainNode.gain.setTargetAtTime(calculateGain(e.clientY), context.currentTime, 0.01);
+  oscillator.frequency.setTargetAtTime(calculateFrequency(e.clientX), context.currentTime, 0.001);
+  gainNode.gain.setTargetAtTime(calculateGain(e.clientY), context.currentTime, 0.001);
   oscillator.connect(gainNode);
   oscillator.start(context.currentTime);
 });
@@ -35,6 +35,7 @@ document.body.addEventListener('mouseup', function () {
 
 document.body.addEventListener('mousemove', function (e) {
   if (mousedown) {
-    oscillator.frequency.setTargetAtTime(calculateFrequency(e.clientX), context.currentTime, 0.01);
+    oscillator.frequency.setTargetAtTime(calculateFrequency(e.clientX), context.currentTime, 0.001);
+    gainNode.gain.setTargetAtTime(calculateGain(e.clientY), context.currentTime, 0.001);
   }
 });
